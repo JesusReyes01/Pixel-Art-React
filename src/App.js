@@ -7,7 +7,7 @@ function App() {
   const [state, setState] = React.useState({
     height: 20,
     width: 20,
-    color: "#3C96B4",
+    color: "#576C4B",
     gridTable: null
   })
 
