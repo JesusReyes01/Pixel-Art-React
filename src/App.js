@@ -3,30 +3,58 @@ import React from 'react';
 
 
 function App() {
-  //Assigning elements to global variables
-  let gridTable = document.getElementById('pixelCanvas');  
 
   const [state, setState] = React.useState({
     height: 20,
     width: 20,
     color: "#3C96B4",
-    eraseMode: false
+    gridTable: null
   })
 
+  React.useEffect(() => {
+    setState({...state, gridTable: document.getElementById('pixelCanvas')})
+  },[])
+
+  //Function handles input from input elements
   let handleChange = (event) => {
     setState({...state, [event.target.name]: event.target.value})
   }
 
+  //Function to create grid
+  let makeGrid = (event) => {
+    event.preventDefault()
+
+    // Deletes grid if it exists
+    if(state.gridTable.rows){
+      while(state.gridTable.rows.length > 0){
+        state.gridTable.deleteRow(0);
+      }
+    }
+    //Creates table
+    for (let i=0; i < state.height; i++){
+      const row = state.gridTable.insertRow(i);
+
+      for (let j=0; j < state.width; j++){
+        const cell = row.insertCell(j);
+      }
+    }
+  }
+
   let down = false;
+
+  //Added Event Listener to change cell background color when mousedown action on window
   window.addEventListener('mousedown', e => {
     if (e.target.tagName === 'TD') {
       down = true
+
       window.addEventListener('mouseup', () => {
         down = false
       });
+
       window.addEventListener('mouseleave', () => {
         down = false
       });
+
       window.addEventListener('mouseover', e => {
         if (down) {
           if (e.target.tagName === 'TD') {
@@ -34,95 +62,83 @@ function App() {
           }
         }
       });
+      
+      if (e.target.tagName === 'TD') {
+        e.target.style.backgroundColor = state.color;
+      }
     }
   });
 
   //Event listener for Double Click. If double click on table changes color to NULL
   window.addEventListener('dblclick', e => {
     if(e.target.tagName === 'TD'){
-      e.target.style.backgroundColor = null;
+        e.target.style.backgroundColor = null;
     }
   });
 
-  //Function to create grid
-  let makeGrid = (event) => {
-      event.preventDefault()
-
-      // Deletes grid if it exists
-      if(gridTable.rows){
-          while(gridTable.rows.length > 0){
-              gridTable.deleteRow(0);
-          }
-      }
-      //Creates table
-      for (let i=0; i < state.height; i++){
-          const row = gridTable.insertRow(i);
-          for (let j=0; j < state.width; j++){
-              const cell = row.insertCell(j);
-              //Adds event listener to each cell and 
-              //changes the background color to selected color when triggered
-              cell.addEventListener('mousedown', () => {
-                  cell.style.backgroundColor = state.color;
-              });
-          }
-      }
-  }
-
-//Function for erase button
+  //Function for erase button
   let eraseMode = e => {
-      e.preventDefault()
-      window.addEventListener('mousedown', e => {
-          down = true;
-        
-          window.addEventListener('mouseup', () => {
-              down = false;
-          });
-        
-          window.addEventListener('mouseleave', () => {
-              down = false;
-          });
-
-          window.addEventListener('mouseover', e => {
-              if (down) {
-                  if (e.target.tagName === 'TD') {
-                      e.target.style.backgroundColor = null;
-                  }
-              }
-          });
+    e.preventDefault()
+    window.addEventListener('mousedown', e => {
+      down = true;
+    
+      window.addEventListener('mouseup', () => {
+        down = false;
+      });
+    
+      window.addEventListener('mouseleave', () => {
+        down = false;
       });
 
-      window.addEventListener('mousedown', (e) => {
-          e.target.style.backgroundColor = null;
+      window.addEventListener('mouseover', e => {
+        if (down) {
+          if (e.target.tagName === 'TD') {
+            e.target.style.backgroundColor = null;
+          }
+        }
       });
-    };
+    });
+
+    window.addEventListener('mousedown', (e) => {
+      if (e.target.tagName === 'TD') {
+        e.target.style.backgroundColor = null;
+      }
+    });
+  };
 
   let drawMode = e => {
-      e.preventDefault()
-      window.addEventListener('mousedown', e => {
-          down = true;
-          window.addEventListener('mouseup', () => {
-              down = false;
-          });
-          window.addEventListener('mouseleave', () => {
-              down = false;
-          });
-          window.addEventListener('mouseover', e => {
-              if (down) {
-                  if (e.target.tagName === 'TD') {
-                      e.target.style.backgroundColor = state.color;
-                  }
-              }
-          });
+    e.preventDefault()
+
+    window.addEventListener('mousedown', e => {
+      down = true;
+
+      window.addEventListener('mouseup', () => {
+        down = false;
       });
 
-    gridTable.addEventListener('mousedown', (e) => {
-          e.target.style.backgroundColor = state.color;
+      window.addEventListener('mouseleave', () => {
+        down = false;
       });
-    };
 
-    let fill = () => {
-      gridTable.querySelectorAll('td').forEach( td => td.style.backgroundColor = state.color);
-    };
+      window.addEventListener('mouseover', e => {
+        if (down) {
+          if (e.target.tagName === 'TD') {
+            e.target.style.backgroundColor = state.color;
+          }
+        }
+      });
+    });
+
+    window.addEventListener('mousedown', (e) => {
+      if (e.target.tagName === 'TD') {
+        e.target.style.backgroundColor = state.color;
+      }
+    });
+  };
+
+  let fill = () => {
+    state.gridTable.querySelectorAll('td').forEach( e => e.style.backgroundColor = state.color);
+  };
 
   return (
     <div>
@@ -130,8 +146,10 @@ function App() {
       <div className = "inputs">
           <div className = "column">
               <h4>Choose Grid Size</h4>
+
               <form id="sizePicker" onSubmit={makeGrid}>
-                <div className="gridInput">
+
+                <div className="grid-input">
                   <span>Grid Height:</span>
                   <input 
                       type="number" 
@@ -142,6 +160,7 @@ function App() {
                       value={state.height}
                       onChange={handleChange}/>
                 </div>
+
                 <div className="grid-input">
                   <span>Grid Width:</span>
                   <input 
@@ -153,6 +172,7 @@ function App() {
                         value={state.width}
                         onChange={handleChange}/>
                 </div>
+
                 <input 
                     id="submitButton" 
                     type="submit" 
@@ -161,6 +181,7 @@ function App() {
                     />
               </form>
           </div>
+
           <div className = "column">
               <h4>Pick A Color</h4>
               <input 
@@ -168,13 +189,15 @@ function App() {
                 id="colorPicker" 
                 name="color"
                 value={state.color}
-                onChange={handleChange}/>
+                onChange={handleChange}
+                />
               <input 
                 type="button" 
                 className="fill-button" 
                 value="FILL"
                 onClick={fill}/>
           </div>
+
           <div className="column">
               <h4>Mode</h4>
               <input 
@@ -190,6 +213,7 @@ function App() {
               onClick={drawMode}/>
           </div>
       </div>
+
       <h2>Design Canvas</h2>
       <table className='pixel-canvas' id="pixelCanvas"></table>
     </div>
