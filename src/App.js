@@ -46,6 +46,7 @@ function App() {
   window.addEventListener('mousedown', e => {
     if (e.target.tagName === 'TD') {
       down = true
+      e.target.style.backgroundColor = state.color;
 
       window.addEventListener('mouseup', () => {
         down = false
@@ -62,9 +63,6 @@ function App() {
           }
         }
       });
-      
-      e.target.style.backgroundColor = state.color;
-      
     }
   });
 
@@ -75,12 +73,15 @@ function App() {
     }
   });
 
-  //Function for erase button
+  //Function for erase button / checks if clicked element is a TD and clears background color
   let eraseMode = e => {
     e.preventDefault()
     window.addEventListener('mousedown', e => {
       down = true;
-    
+      if (e.target.tagName === 'TD') {
+        e.target.style.backgroundColor = null;
+      }
+
       window.addEventListener('mouseup', () => {
         down = false;
       });
@@ -97,19 +98,16 @@ function App() {
         }
       });
     });
-
-    window.addEventListener('mousedown', (e) => {
-      if (e.target.tagName === 'TD') {
-        e.target.style.backgroundColor = null;
-      }
-    });
   };
-
+//Activates ability to draw on canvas again/ checks if clicked element is TD
   let drawMode = e => {
     e.preventDefault()
 
     window.addEventListener('mousedown', e => {
       down = true;
+      if (e.target.tagName === 'TD') {
+        e.target.style.backgroundColor = state.color;
+      }
 
       window.addEventListener('mouseup', () => {
         down = false;
@@ -127,14 +125,8 @@ function App() {
         }
       });
     });
-
-    window.addEventListener('mousedown', (e) => {
-      if (e.target.tagName === 'TD') {
-        e.target.style.backgroundColor = state.color;
-      }
-    });
   };
-
+//Changes all cell to selected color
   let fill = () => {
     state.gridTable.querySelectorAll('td').forEach( e => e.style.backgroundColor = state.color);
   };
