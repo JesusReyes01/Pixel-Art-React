@@ -208,7 +208,7 @@ function App() {
       <h2>Design Canvas</h2>
       <table className='pixel-canvas' id="pixelCanvas"></table>
       <footer>
-        <p>JESUS REYES <span>&#9400;2021</span></p>
+        <p>CREATED BY: JESUS REYES</p>
       </footer>
     </div>
   );
