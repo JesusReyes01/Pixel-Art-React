@@ -1,7 +1,6 @@
 body {
   text-align: center;
   background-color: #C5B7A0;
-  font-family: Arial;
 }
 
 * {
@@ -15,6 +14,7 @@ h1 {
   margin: 0.2em;
   font-weight: 200;
 }
+
 h2 {
   font-family: 'Bungee', cursive;
   margin: 1em 0 0.25em;
@@ -24,6 +24,7 @@ h4 {
   margin: 1em 0 0.75em;
   text-transform: uppercase;
 }
+
 em {
   font-size: 13px;
   color: grey;
@@ -80,8 +81,6 @@ input[type=number] {
 }
 
 .inputs {
-  /* box-shadow: inset 0px 1px 0 0 #fff; */
-  /* background: linear-gradient(#cecece 5%, #dadada 100%); */
   width: 500px;
   height: 160px;
   margin: 0 auto;
@@ -94,7 +93,6 @@ input[type=number] {
   padding-left: 2em; 
   padding-top: .5em;
   background-color: rgb(209, 204, 184);
-
 }
 
 .column {
@@ -136,4 +134,12 @@ input[type=number] {
   justify-content: space-between;
   align-items: center;
   height: 30px;
+}
+
+footer {
+  font-size: 11px;
+}
+
+footer p span{
+  color: #576C4B;
 }
