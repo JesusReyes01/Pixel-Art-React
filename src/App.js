@@ -63,9 +63,8 @@ function App() {
         }
       });
       
-      if (e.target.tagName === 'TD') {
-        e.target.style.backgroundColor = state.color;
-      }
+      e.target.style.backgroundColor = state.color;
+      
     }
   });
 
